@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Peta Kampus dengan Leaflet</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f6f8;
+            color: #333;
+        }
+
+        h3 {
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+            background-color: #007bff;
+            color: white;
+        }
+
+        #map {
+            height: 600px;
+            max-width: 960px;
+            margin: 20px auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border: 3px solid #007bff;
+        }
+
+        /* Custom zoom controls */
+        .leaflet-control-zoom {
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        /* Custom popup */
+        .leaflet-popup-content-wrapper {
+            border-radius: 10px;
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .leaflet-popup-content {
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h3>Peta Lokasi Kampus STT-NF dan Sekitarnya</h3>
+    <div id="map"></div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <!-- Data GeoJSON -->
+    <script>
+        const kampusGeoJSON = {
+            "type": "FeatureCollection",
+            "features": [
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "kampus": "Kampus A STT-NF",
+                        "kota": "Depok"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [106.8418778,-6.3627739]  // Kelapa Dua Depok
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "kampus": "Kampus B STT-NF",
+                        "kota": "Jakarta Selatan"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [106.8300487,-6.3529245]  // Srengseng Sawah Jaksel
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "kampus": "Kampus UI",
+                        "kota": "Depok"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [106.8246594,-6.3606229]  // UI Depok
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "kampus": "Univ Pancasila",
+                        "kota": "Jakarta Selatan"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [106.8306768,-6.3398287]  // Lenteng Agung Jaksel
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "kampus": "Gunadarma",
+                        "kota": "Depok"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [106.7725676,-6.3691146]  // Kelapa Dua Depok
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {
+                        "kampus": "Polimedia",
+                        "kota": "Jakarta Selatan"
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [106.8086769,-6.3473534]  // Srengseng Sawah Jaksel
+                    }
+                }
+            ]
+        };
+
+        // Inisialisasi Peta
+        const map = L.map('map').setView([-6.36, 106.8], 13);
+
+        // Tambahkan Tile Layer dari OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Tambahkan GeoJSON ke Peta
+        L.geoJSON(kampusGeoJSON, {
+            onEachFeature: function (feature, layer) {
+                const popupContent = `<b>${feature.properties.kampus}</b><br>Kota: ${feature.properties.kota}`;
+                layer.bindPopup(popupContent);
+            }
+        }).addTo(map);
+    </script>
+</body>
+</html>
